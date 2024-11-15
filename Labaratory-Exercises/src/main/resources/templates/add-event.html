@@ -52,12 +52,15 @@
                 </div>
                 <div class="form-group">
                     <label for="location">Location</label>
-                    <select class="form-select" name="locationId">
+                    <select class="form-select" required name="locationId">
                         <option th:each="location: ${locations}"
                                 id="location"
                                 th:value="${location.getId()}"
                                 th:text="${location.getName()}"
-                                th:selected="${location.getId().equals(event.getLocation().getId())}">
+                                th:selected="(${event} != null ?
+                                 ${location.getId().equals(event.getLocation().getId())} :
+                                 '0'
+                                )">
                         </option>
                     </select>
                 </div>

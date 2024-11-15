@@ -1,5 +1,6 @@
 package mk.ukim.finki.lab.web.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import mk.ukim.finki.lab.model.Event;
 import mk.ukim.finki.lab.model.Location;
 import mk.ukim.finki.lab.service.EventService;
@@ -20,6 +21,22 @@ public class EventController {
     public EventController(EventService eventService, LocationService locationService) {
         this.eventService = eventService;
         this.locationService = locationService;
+    }
+
+    @GetMapping("/{id}/details")
+    public String getEventDetails(@PathVariable Long id, Model model) {
+        Event event = eventService.findEventById(id).get();
+        model.addAttribute("event", event);
+        return "event-details";
+    }
+    @PostMapping("/add-comment")
+    public String addComment(@RequestParam Long eventId,
+                             @RequestParam String comment,
+                             HttpServletRequest request,
+                             Model model) {
+        String userId = (String) request.getSession().getId();
+        eventService.addComment(userId, eventId, comment);
+        return "redirect:/events/" + eventId + "/details";
     }
 
     @GetMapping()

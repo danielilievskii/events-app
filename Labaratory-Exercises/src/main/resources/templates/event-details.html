@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Event details</h2>
+            <p>Name: <span th:text="${event.getName()}"></span></p>
+            <p>Description: <span th:text="${event.getDescription()}"></span></p>
+            <p>Popularity score: <span th:text="${event.getPopularityScore()}"></span></p>
+            <p>Available tickets: <span th:text="${event.getAvailableTickets()}"></span></p>
+            <p>Location: <span th:text="${event.getLocation().getName()}"></span></p>
+
+            <form th:action="@{'/events/add-comment'}" th:method="POST">
+                <h4>Add comment</h4>
+                <input type="hidden" name="eventId" th:value="${event.getId()}">
+                <textarea rows="10" cols="60" required name="comment" placeholder="Enter your comment"></textarea>
+                <br>
+                <button class="btn btn-primary" type="submit">Submit</button>
+                <a class="btn btn-primary" th:href="@{/events}">Back!</a>g
+            </form>
+
+        </div>
+        <div class="col-md-6">
+            <h3>Comments</h3>
+            <div th:each="comment: ${event.getComments()}">
+                <p>Author: <span th:text="${comment.getUserId()}"></span> </p>
+                <p><span th:text="${comment.getComment()}"></span> </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+</body>
+</html>

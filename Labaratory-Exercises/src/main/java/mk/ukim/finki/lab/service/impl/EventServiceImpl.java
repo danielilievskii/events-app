@@ -1,5 +1,6 @@
 package mk.ukim.finki.lab.service.impl;
 
+import mk.ukim.finki.lab.model.Comment;
 import mk.ukim.finki.lab.model.Event;
 import mk.ukim.finki.lab.model.Location;
 import mk.ukim.finki.lab.repository.EventRepository;
@@ -60,5 +61,10 @@ public class EventServiceImpl implements EventService {
     @Override
     public void deleteEventById(Long id) {
         eventRepository.deleteEventById(id);
+    }
+
+    @Override
+    public Comment addComment(String userId, Long eventId, String comment) {
+        return eventRepository.placeComment(new Comment(userId, eventId, comment));
     }
 }

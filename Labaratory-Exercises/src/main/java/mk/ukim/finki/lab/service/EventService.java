@@ -1,5 +1,6 @@
 package mk.ukim.finki.lab.service;
 
+import mk.ukim.finki.lab.model.Comment;
 import mk.ukim.finki.lab.model.Event;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,4 +20,6 @@ public interface EventService {
     Optional<Event> editEvent(Long eventId, String name, String description, double popularityScore, Long locationId);
 
     void deleteEventById(Long id);
+
+    Comment addComment(String userId, Long eventId, String comment);
 }

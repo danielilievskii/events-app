@@ -2,6 +2,7 @@ package mk.ukim.finki.lab.repository;
 
 import jakarta.annotation.PostConstruct;
 import mk.ukim.finki.lab.bootstrap.DataHolder;
+import mk.ukim.finki.lab.model.Comment;
 import mk.ukim.finki.lab.model.Event;
 import mk.ukim.finki.lab.model.EventBooking;
 import org.springframework.stereotype.Repository;
@@ -45,5 +46,13 @@ public class EventRepository {
         //DataHolder.eventBookings.removeIf(event -> eventBooking.getEventName().equals(eventBooking.getEventName()));
         DataHolder.eventBookings.add(eventBooking);
         return eventBooking;
+   }
+
+   public Comment placeComment(Comment comment) {
+        Event event = findEventById(comment.getEventId()).orElse(null);
+        if (event != null) {
+            event.getComments().add(comment);
+        }
+        return comment;
    }
 }
