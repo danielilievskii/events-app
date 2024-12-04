@@ -32,7 +32,7 @@ public class EventController {
         return "eventsList";
     }
 
-    @PostMapping("/search")
+    @PostMapping()
     public String searchEvents(@RequestParam String keyword,
                                @RequestParam(defaultValue = "0") int rating,
                                @RequestParam Long locationId,

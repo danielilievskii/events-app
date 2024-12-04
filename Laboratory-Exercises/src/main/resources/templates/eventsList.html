@@ -32,7 +32,7 @@
                     <h1>Welcome to our Event Booking App</h1>
                 </header>
                 <div>
-                    <form th:action="@{/events/search}" th:method="POST">
+                    <form th:action="@{/events}" th:method="POST">
                         <input type="text" name="keyword" placeholder="Search by name">
                         <input type="number" name="rating" placeholder="Set minimum rating">
                         <select class="form-select" required name="locationId">

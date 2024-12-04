@@ -76,7 +76,12 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void deleteEventById(Long id) {
-        eventRepository.deleteById(id);
+        Event event = eventRepository.findById(id).orElse(null);
+         if (event != null) {
+             commentRepository.deleteAll(event.getComments());
+             eventRepository.deleteById(id);
+         }
+
     }
 
     @Override
