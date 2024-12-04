@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface EventService {
     List<Event> listAll();
 
-    List<Event> searchEvents(String text, int rating);
+    List<Event> searchEvents(String text, int rating, Long locationId);
 
     Optional<Event> findEventById(Long id);
 

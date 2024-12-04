@@ -4,11 +4,15 @@
     <meta charset="utf-8">
     <title>Event Booking page - Welcome and choose an Event</title>
     <style type="text/css">
-        body {
-            width: 1000px;
-            margin: auto;
+        .margin-bottom {
+            margin-bottom: 30px;
+        }
+
+        .visible {
+            visibility: visible; /* Make it visible without affecting layout */
         }
     </style>
+    <link href="app.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script>
@@ -20,20 +24,34 @@
     </script>
 </head>
 <body>
-<header>
-    <h1>Welcome to our Event Booking App</h1>
-</header>
 <main>
-    <div>
-        <form th:action="@{/}" th:method="POST">
-            <input type="text" name="keyword" placeholder="Search by name">
-            <input type="number" name="rating" placeholder="Set minimum rating">
-            <input type="submit" value="Search">
-        </form>
-
-    </div>
-    <br>
     <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <header class="d-flex justify-content-center">
+                    <h1>Welcome to our Event Booking App</h1>
+                </header>
+                <div>
+                    <form th:action="@{/events/search}" th:method="POST">
+                        <input type="text" name="keyword" placeholder="Search by name">
+                        <input type="number" name="rating" placeholder="Set minimum rating">
+                        <select class="form-select" required name="locationId">
+                            <option th:value="-1">
+                                All locations
+                            </option>
+                            <option th:each="location: ${locations}"
+                                    th:value="${location.getId()}"
+                                    th:text="${location.getName()}"
+                            >
+                            </option>
+                        </select>
+                        <input type="submit" value="Search">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <br>
         <div class="row">
             <div class="col-md-8">
                 <h2>
@@ -46,85 +64,112 @@
                 </a>
             </div>
         </div>
-    </div>
 
-    <div>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Event name</th>
-                    <th>Description</th>
-                    <th>Rating</th>
-                    <th>Available Tickets</th>
-                    <th>Location</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="event: ${events}">
-                    <td th:text="${event.getName()}"></td>
-                    <td th:text="${event.getDescription()}"></td>
-                    <td th:text="${event.getPopularityScore()}"></td>
-                    <td th:text="${event.getAvailableTickets()}"></td>
-                    <td th:text="${event.getLocation().getName()}"></td>
-                    <td class="text-right">
-                        <div class="d-flex flex-row gap-3 align-items-center">
-                            <div class="ml-2">
-                                <form th:action="@{'/events/' + ${event.getId()} + '/details'}" th:method="GET" class="me-2">
-                                    <button type="submit" class="btn btn-primary btn-sm">Details</button>
-                                </form>
-                            </div>
-                            <div class="ml-2">
-                                <form th:action="@{'/events/delete/' + ${event.getId()}}" th:method="POST" class="me-2">
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
-                            </div>
-                            <div class="ml-2">
-                                <a th:href="@{'/events/edit-form/' + ${event.getId()}}">
-                                    <button type="submit" class="btn btn-info btn-sm">Edit</button>
-                                </a>
-                            </div>
-                            <div class="ml-2">
-                                <input type="radio" th:disabled="${event.getAvailableTickets() == 0}" th:attr="onchange=|setSelectedEvent(${event.getId()})|"  name="eventBook" th:value="${event.getName()}" class="me-2">
-                            </div>
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive margin-bottom">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Event name</th>
+                            <th>Description</th>
+                            <th>Rating</th>
+                            <th>Available Tickets</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="event: ${events}">
+                            <td th:text="${event.getName()}"></td>
+                            <td th:text="${event.getDescription()}"></td>
+                            <td th:text="${event.getPopularityScore()}"></td>
+                            <td th:text="${event.getAvailableTickets()}"></td>
+                            <td th:text="${event.getLocation().getName()}"></td>
+                            <td class="text-right">
+                                <div class="d-flex flex-row gap-3 align-items-center">
+                                    <div class="ml-2">
+                                        <form th:action="@{'/events/' + ${event.getId()} + '/details'}" th:method="GET" class="me-2">
+                                            <button type="submit" class="btn btn-primary btn-sm">Details</button>
+                                        </form>
+                                    </div>
+                                    <div class="ml-2">
+                                        <form th:action="@{'/events/delete/' + ${event.getId()}}" th:method="POST" class="me-2">
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    </div>
+                                    <div class="ml-2">
+                                        <a th:href="@{'/events/edit-form/' + ${event.getId()}}">
+                                            <button type="submit" class="btn btn-info btn-sm">Edit</button>
+                                        </a>
+                                    </div>
+                                    <div class="ml-2">
+                                        <input type="radio" th:disabled="${event.getAvailableTickets() == 0}" th:attr="onchange=|setSelectedEvent(${event.getId()})|"  name="eventBook" th:value="${event.getName()}" class="me-2">
+                                    </div>
+
+                                </div>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                    <span id="errorMessage" style="color: red; visibility: hidden;">
+                        Please select an event.
+                    </span>
+                </div>
+                <form action="/eventBooking" th:method="POST" id="bookingForm">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <input required type="hidden" name="eventId" id="selectedEventId">
+                            <div class="form-group">
+                                <label for="attendeeName">Name:</label>
+                                <input type="text"
+                                       id="attendeeName"
+                                       class="form-control"
+                                       name="attendeeName"
+                                       required
+                                       placeholder="Enter your name"
+                                >
+                            </div>
                         </div>
-                    </td>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="numTickets">Number of tickets:</label>
+                                <input type="number"
+                                       id="numTickets"
+                                       class="form-control"
+                                       name="numTickets"
+                                       required
+                                       min="1" max="10"
+                                       placeholder="Enter number tickets"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Submit">
+                </form>
 
-                </tr>
-                </tbody>
-            </table>
+                <script>
+                    document.getElementById('bookingForm').addEventListener('submit', function(event) {
+                        var eventId = document.getElementById('selectedEventId').value;
+                        var errorMessage = document.getElementById('errorMessage');
+                        if (!eventId) {
+                            errorMessage.classList.add('visible');
+                            event.preventDefault();
+                        } else {
+                            errorMessage.classList.remove('visible');
+                        }
+                    });
+                </script>
+                <p th:if="${error}" th:text="${error}"></p>
+            </div>
         </div>
-        <form action="/eventBooking" th:method="POST" id="bookingForm">
-            <input required type="hidden" name="eventId" id="selectedEventId">
-            <div class="form-group">
-                <label for="attendeeName">Name:</label>
-                <input type="text"
-                       id="attendeeName"
-                       class="form-control"
-                       name="attendeeName"
-                       required
-                       placeholder="Enter your name"
-                >
-            </div>
-            <div class="form-group">
-                <label for="numTickets">Number of tickets:</label>
-                <input type="number"
-                       id="numTickets"
-                       class="form-control"
-                       name="numTickets"
-                       required
-                       min="1" max="10"
-                       placeholder="Enter number tickets"
-                >
-            </div>
-
-            <input class="btn btn-primary" type="submit" value="Submit">
-        </form>
 
     </div>
-    <p th:if="${error}" th:text="${error}"></p>
+
 
 </main>
 

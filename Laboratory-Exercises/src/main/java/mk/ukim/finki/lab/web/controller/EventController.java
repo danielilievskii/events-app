@@ -23,26 +23,24 @@ public class EventController {
         this.locationService = locationService;
     }
 
-    @GetMapping("/{id}/details")
-    public String getEventDetails(@PathVariable Long id, Model model) {
-        Event event = eventService.findEventById(id).get();
-        model.addAttribute("event", event);
-        return "event-details";
-    }
-    @PostMapping("/add-comment")
-    public String addComment(@RequestParam Long eventId,
-                             @RequestParam String comment,
-                             HttpServletRequest request,
-                             Model model) {
-        String userId = (String) request.getSession().getId();
-        eventService.addComment(userId, eventId, comment);
-        return "redirect:/events/" + eventId + "/details";
-    }
-
     @GetMapping()
     public String getEventsPage(@RequestParam(required = false) String error, Model model) {
         List<Event> events = eventService.listAll();
+        List<Location> locations = locationService.findAll();
         model.addAttribute("events", events);
+        model.addAttribute("locations", locations);
+        return "eventsList";
+    }
+
+    @PostMapping("/search")
+    public String searchEvents(@RequestParam String keyword,
+                               @RequestParam(defaultValue = "0") int rating,
+                               @RequestParam Long locationId,
+                               Model model) {
+        List<Event> events = eventService.searchEvents(keyword, rating, locationId);
+        List<Location> locations = locationService.findAll();
+        model.addAttribute("events", events);
+        model.addAttribute("locations", locations);
         return "eventsList";
     }
 
@@ -84,7 +82,6 @@ public class EventController {
                             Model model) {
         eventService.editEvent(Long.parseLong(eventId), name, description, popularityScore, Long.parseLong(locationId));
         return "redirect:/events";
-
     }
 
     @PostMapping("/delete/{id}")
@@ -93,6 +90,21 @@ public class EventController {
         return "redirect:/events";
     }
 
+    @GetMapping("/{id}/details")
+    public String getEventDetails(@PathVariable Long id, Model model) {
+        Event event = eventService.findEventById(id).get();
+        model.addAttribute("event", event);
+        return "event-details";
+    }
 
+    @PostMapping("/add-comment")
+    public String addComment(@RequestParam Long eventId,
+                             @RequestParam String comment,
+                             HttpServletRequest request,
+                             Model model) {
+        String userId = (String) request.getSession().getId();
+        eventService.addComment(userId, eventId, comment);
+        return "redirect:/events/" + eventId + "/details";
+    }
 
 }

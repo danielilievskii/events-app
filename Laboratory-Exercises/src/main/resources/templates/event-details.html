@@ -23,15 +23,19 @@
                 <textarea rows="10" cols="60" required name="comment" placeholder="Enter your comment"></textarea>
                 <br>
                 <button class="btn btn-primary" type="submit">Submit</button>
-                <a class="btn btn-primary" th:href="@{/events}">Back!</a>g
+                <a class="btn btn-primary" th:href="@{/events}">Back</a>
             </form>
 
         </div>
         <div class="col-md-6">
             <h3>Comments</h3>
             <div th:each="comment: ${event.getComments()}">
-                <p>Author: <span th:text="${comment.getUserId()}"></span> </p>
-                <p><span th:text="${comment.getComment()}"></span> </p>
+                <div class="card text-dark bg-light mb-3" style="max-width: 60rem;">
+                    <div class="card-header">Author: <span th:text="${comment.getUserId()}"></span></div>
+                    <div class="card-body">
+                        <p class="card-text"><span th:text="${comment.getComment()}"></span></p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

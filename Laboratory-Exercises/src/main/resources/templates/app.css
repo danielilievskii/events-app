@@ -1,0 +1,8 @@
+.container {
+    width: 80% !important;
+    max-width: 1500px !important;
+}
+
+.container, .custom-container {
+    margin-top: 120px !important;
+}

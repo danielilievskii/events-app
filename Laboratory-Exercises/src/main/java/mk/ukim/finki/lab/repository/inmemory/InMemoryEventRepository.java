@@ -1,19 +1,17 @@
-package mk.ukim.finki.lab.repository;
+package mk.ukim.finki.lab.repository.inmemory;
 
-import jakarta.annotation.PostConstruct;
 import mk.ukim.finki.lab.bootstrap.DataHolder;
 import mk.ukim.finki.lab.model.Comment;
 import mk.ukim.finki.lab.model.Event;
 import mk.ukim.finki.lab.model.EventBooking;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-public class EventRepository {
+public class InMemoryEventRepository {
     public List<Event> findALl() {return DataHolder.events;}
     public List<Event> searchEvents(String text, int rating) {
        return DataHolder.events.stream()
@@ -49,7 +47,7 @@ public class EventRepository {
    }
 
    public Comment placeComment(Comment comment) {
-        Event event = findEventById(comment.getEventId()).orElse(null);
+        Event event = findEventById(comment.getEvent().getId()).orElse(null);
         if (event != null) {
             event.getComments().add(comment);
         }
