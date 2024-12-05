@@ -95,4 +95,9 @@ public class EventServiceImpl implements EventService {
         return null;
 
     }
+
+    @Override
+    public boolean checkIfEventExists(String name, Long locationId) {
+        return eventRepository.existsEventByNameAndLocation(name, locationRepository.findById(locationId));
+    }
 }

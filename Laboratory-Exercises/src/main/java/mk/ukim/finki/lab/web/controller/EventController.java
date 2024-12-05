@@ -29,6 +29,10 @@ public class EventController {
         List<Location> locations = locationService.findAll();
         model.addAttribute("events", events);
         model.addAttribute("locations", locations);
+        if(error != null) {
+            model.addAttribute("error", "Event with that name and location already exitsts.");
+        }
+
         return "eventsList";
     }
 
@@ -57,8 +61,13 @@ public class EventController {
                             @RequestParam double popularityScore,
                             @RequestParam long locationId,
                             Model model) {
-        eventService.addEvent(name, description, popularityScore, locationId);
-        return "redirect:/events";
+        if(eventService.checkIfEventExists(name, locationId)) {
+            return "redirect:/events?error=EventExists";
+        } else {
+            eventService.addEvent(name, description, popularityScore, locationId);
+            return "redirect:/events";
+        }
+
     }
 
     @GetMapping("/edit-form/{id}")
@@ -78,10 +87,14 @@ public class EventController {
                             @RequestParam String name,
                             @RequestParam String description,
                             @RequestParam double popularityScore,
-                            @RequestParam String locationId,
+                            @RequestParam Long locationId,
                             Model model) {
-        eventService.editEvent(Long.parseLong(eventId), name, description, popularityScore, Long.parseLong(locationId));
-        return "redirect:/events";
+        if(eventService.checkIfEventExists(name, locationId)) {
+            return "redirect:/events?error=EventExists";
+        } else {
+            eventService.editEvent(Long.parseLong(eventId), name, description, popularityScore, locationId);
+            return "redirect:/events";
+        }
     }
 
     @PostMapping("/delete/{id}")

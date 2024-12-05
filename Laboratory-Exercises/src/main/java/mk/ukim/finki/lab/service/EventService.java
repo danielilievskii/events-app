@@ -22,4 +22,5 @@ public interface EventService {
     void deleteEventById(Long id);
 
     Comment addComment(String userId, Long eventId, String comment);
+    boolean checkIfEventExists(String name, Long locationId);
 }

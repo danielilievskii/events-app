@@ -114,6 +114,7 @@
                         </tr>
                         </tbody>
                     </table>
+                    <p th:if="${error}" style="color: red;" th:text="${error}"></p>
                     <span id="errorMessage" style="color: red; visibility: hidden;">
                         Please select an event.
                     </span>
@@ -164,7 +165,7 @@
                         }
                     });
                 </script>
-                <p th:if="${error}" th:text="${error}"></p>
+
             </div>
         </div>
 
