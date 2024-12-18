@@ -1,0 +1,21 @@
+<div class="container mt-5">
+    <div class="row">
+        <form th:method="POST" th:action="@{/login}">
+            <div class="mb-3">
+                <label for="inputUsername" class="form-label">Userame</label>
+                <input type="text" name="username" class="form-control" id="inputUsername" placeholder="Enter your username">
+            </div>
+            <div class="mb-3">
+                <label for="inputPassword" class="form-label">Email</label>
+                <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Enter your password">
+            </div>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox"  id="checkRemember">
+                    <label class="form-check-label" for="checkRemember">Remember me</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+        </form>
+    </div>
+</div>

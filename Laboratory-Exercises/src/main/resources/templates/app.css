@@ -6,3 +6,11 @@
 .container, .custom-container {
     margin-top: 120px !important;
 }
+
+.margin-bottom {
+    margin-bottom: 30px;
+}
+
+.container-custom {
+    width: 80% !important;
+}

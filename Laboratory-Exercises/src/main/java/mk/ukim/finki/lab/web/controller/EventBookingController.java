@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import mk.ukim.finki.lab.model.EventBooking;
 import mk.ukim.finki.lab.service.EventBookingService;
 import mk.ukim.finki.lab.service.EventService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +28,9 @@ public class EventBookingController {
     public String getEventBookingPage(HttpServletRequest request, Model model) {
         String attendeeId = request.getSession().getId();
         model.addAttribute("eventBookings", eventBookingService.findBookingsByAttendeeId(attendeeId));
-        return "bookingConfirmation";
+
+        model.addAttribute("bodyContent", "bookingConfirmation");
+        return "master-template";
 
     }
 
@@ -36,11 +40,18 @@ public class EventBookingController {
                                @RequestParam int numTickets,
                                HttpServletRequest request
     ) {
-        String attendeeId = request.getSession().getId();
-        String attendeeAddress = request.getLocalAddr();
-        eventBookingService.placeBooking(eventId, attendeeId, attendeeName, attendeeAddress, numTickets);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        return "redirect:/eventBooking";
+        if(authentication != null && authentication.isAuthenticated()) {
+            String attendeeId = request.getSession().getId();
+            String attendeeAddress = request.getLocalAddr();
+            eventBookingService.placeBooking(eventId, attendeeId, attendeeName, attendeeAddress, numTickets);
+            return "redirect:/eventBooking";
+        }
+        else {
+            return "redirect:/login";
+        }
+
 
     }
 

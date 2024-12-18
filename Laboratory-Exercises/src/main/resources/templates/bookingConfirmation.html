@@ -1,57 +1,46 @@
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Booking - Confirmation</title>
-    <style type="text/css">
-        body {
-            width: 800px;
-            margin: auto;
-        }
-        table {
-            width:100%;
-        }
-        table, td, th {
-            border: 1px solid black;
-            padding: 3px 2px;
-        }
-    </style>
-</head>
-<body>
-<section>
-    <header>
-        <h1>Event Booking page - Booking confirmation </h1>
-    </header>
-    <table th:if="${eventBookings}" th:each="eventBooking : ${eventBookings}">
-        <tr>
-            <th colspan="2">
-                Your Booking Status
-            </th>
-        </tr>
-        <tr>
-            <td><b>Attendee Name </b></td>
-            <td th:text="${eventBooking.getAttendeeName()}"></td>
-        </tr>
-        <tr>
-            <td><b>Client IP Address</b></td>
-            <td th:text="${eventBooking.getAttendeeAddress()}"></td>
-        </tr>
-        <tr>
-            <td><b>Booking for Event</b></td>
-            <td th:text="${eventBooking.getEvent().getName()}">Oppenheimer</td>
-        </tr>
-        <tr>
-            <td><b>Number of tickets</b></td>
-            <td th:text="${eventBooking.getNumberOfTickets()}"></td>
-        </tr>
-    </table>
+<div class="container mt-5">
+    <div class="row">
+        <section class="d-flex flex-column justify-content-center text-center">
+            <h3 class="display-4 fw-bold mb-3">Booking confirmations</h3>
 
-    <div th:unless="${eventBookings}">
-        <h2>No booking has been made yet. Please select an event and proceed with your booking.</h2>
+            <div th:if="${eventBookings.size() == 0}">
+                <p class="lead text-muted mb-4">
+                    No bookings has been made yet. Please select an event and proceed with your booking.
+                </p>
+            </div>
+        </section>
+
+
+
+        <div th:if="${eventBookings}" class="container py-5">
+            <div th:each="eventBooking : ${eventBookings}" class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">
+                        <i class="fas fa-ticket-alt me-2"></i>Your Booking Status
+                    </h5>
+                    <hr>
+
+                    <p class="mb-2">
+                        <i class="fas fa-user me-2 text-secondary"></i>
+                        <b>Attendee Name:</b> <span th:text="${eventBooking.getAttendeeName()}"></span>
+                    </p>
+
+                    <p class="mb-2">
+                        <i class="fas fa-network-wired me-2 text-secondary"></i>
+                        <b>Client IP Address:</b> <span th:text="${eventBooking.getAttendeeAddress()}"></span>
+                    </p>
+
+                    <p class="mb-2">
+                        <i class="fas fa-calendar-alt me-2 text-secondary"></i>
+                        <b>Booking for Event:</b> <span th:text="${eventBooking.getEvent().getName()}"></span>
+                    </p>
+
+                    <p class="mb-2">
+                        <i class="fas fa-ticket-alt me-2 text-secondary"></i>
+                        <b>Number of Tickets:</b> <span th:text="${eventBooking.getNumberOfTickets()}"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <a class="btn btn-primary" th:href="@{/events}">Back</a>
-
-
-</section>
-</body>
-</html>
+</div>
